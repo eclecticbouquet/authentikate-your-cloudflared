@@ -1,0 +1,12 @@
+# Text starting with a "#" is a note, and ignored by whatever is interpretting your .yml.
+# White space matters in .yml files. Keep your spacing similar to how it is here. 
+# <> means that you need to replace <> and it's contents with your own values.
+
+---
+services:
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: cloudflared
+    command: tunnel --no-autoupdate run --token
+      <your token>
+    restart: always

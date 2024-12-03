@@ -1,0 +1,97 @@
+# Text starting with a "#" is a note, and ignored by whatever is interpretting your .yml.
+# White space matters in .yml files. Keep your spacing similar to how it is here. 
+# <> means that you need to replace <> and it's contents with your own values.
+# ${} is stating a variable, whose value is defined in your .env file.
+
+---
+services:
+  postgresql:
+    image: docker.io/library/postgres:16-alpine
+    container_name: postgresql-atk
+    restart: unless-stopped
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - pg_isready -d <name for your authentik database> -U <username for your authentik database>
+      start_period: 20s
+      interval: 30s
+      retries: 5
+      timeout: 5s
+    volumes:
+      - database:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD} 
+      POSTGRES_USER: <username for your authentik database>
+      POSTGRES_DB: <name for your authentik database>
+    env_file:
+      - .env
+  redis:
+    image: docker.io/library/redis:alpine
+    container_name: redis-atk
+    command: --save 60 1 --loglevel warning
+    restart: unless-stopped
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - redis-cli ping | grep PONG
+      start_period: 20s
+      interval: 30s
+      retries: 5
+      timeout: 3s
+    volumes:
+      - redis:/data
+  authentik:
+    image: ghcr.io/goauthentik/server:latest
+    container_name: authentik-server
+    command: server
+    restart: unless-stopped
+    environment:
+      AUTHENTIK_REDIS__HOST: redis
+      AUTHENTIK_POSTGRESQL__HOST: postgresql
+      AUTHENTIK_POSTGRESQL__USER: <username for your authentik database>
+      AUTHENTIK_POSTGRESQL__NAME: <name for your authentik database>
+      AUTHENTIK_POSTGRESQL__PASSWORD: ${AUTHENTIK_POSTGRESQL__PASSWORD}
+      AUTHENTIK_REDIS__DB: 1
+    volumes:
+      - ./media:/media
+      - ./custom-templates:/templates
+      - ./sevmonster-style.css:/web/dist/custom.css
+    env_file:
+      - .env
+    ports:
+      - <HTTP access port>:9000 # Use this host port when first accessing the authentik UI.
+      - <HTTPS access port>:9443
+        # (host port):(docker port)
+        # You can customize the host ports, but the docker ports need to remain default.
+    depends_on:
+      - postgresql
+      - redis
+  worker:
+    image: ghcr.io/goauthentik/server:2024.10.4
+    container_name: authentik-worker
+    command: worker
+    restart: unless-stopped
+    environment:
+      AUTHENTIK_REDIS__HOST: redis
+      AUTHENTIK_POSTGRESQL__HOST: postgresql
+      AUTHENTIK_POSTGRESQL__USER: <username for your authentik database>
+      AUTHENTIK_POSTGRESQL__NAME: <name for your authentik database>
+      AUTHENTIK_POSTGRESQL__PASSWORD: ${AUTHENTIK_POSTGRESQL__PASSWORD}
+      AUTHENTIK_REDIS__DB: 1
+    user: root
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+        # Allows Authentik to perform tasks such as service discovery or interacting with Docker resources directly. 
+      - ./media:/media
+      - ./certs:/certs
+      - ./custom-templates:/templates
+    env_file:
+      - .env
+    depends_on:
+      - postgresql
+      - redis
+volumes:
+  database:
+    driver: local
+  redis:
+    driver: local
