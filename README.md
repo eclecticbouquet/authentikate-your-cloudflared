@@ -36,7 +36,7 @@ Verify that your chosen service is accessible at ```http://<your-host's-ip>:<ser
 - h. Try and access the authentik UI by going to ```http:/<your-host's-ip>:9000/if/flow/initial-setup/```. Remember to change ```9000``` to whatever custom port you've designated, if you did in fact designate a non-standard port.  
 - i. Login with the default admin username, ```akadmin```. Set a strong password, and enter the UI.
 
-##### Troubleshooting: 
+#### Troubleshooting: 
 
 If the UI is not accessible, there are a number of possible reasons why. Here are a few to investigate:
 
@@ -66,7 +66,7 @@ Before we set up authentik, we now need to set up a Cloudflare tunnel. The servi
 Upon clicking Next for your newly created and successfully connected Cloudflare tunnel, you should be met with the option to create a public hostname for your service. This is what maps services running on your host to a readable URL, accessible to the public. In this step, we are going to expose authentik so that it's authorizations flows can be used remotely. Then we will secure the authentik UI.
 
 - a. Choose a Subdomain for authentik. It may be best to choose a simple and easy to remember subdomain name, like ```auth```, so that you can simply access your authentik UI at ```auth.exampledomain.com```.
-- b. Select your personal domain from the down down, or type it in manually. 
+- b. Select your personal domain from the drop down, or type it in manually. 
 - c. Leave the Path blank.
 - d. Select ```HTTP``` as the Service Type. authentik will be accessible over HTTPS once exposed (because of Cloudflare provided certificates). But until it is exposed, authentik is only available over HTTP within your local network. Thus why you are telling your Cloudflare tunnel to find authentik at a HTTP address.
 - e. Type in ```http://<your-host's-ip>:<authentik's port>``` for the Service URL. It should look something like ```192.168.1.69:9000```.
@@ -74,7 +74,7 @@ Upon clicking Next for your newly created and successfully connected Cloudflare 
 - g. Test that the mapping was successful. Ideally, you'd test this from a computer not connected to your local network, to test remote access. Enter the URL you chose into a browser, and see if it takes you to your authentik UI. It may not work for a few minutes, while the DNS records are updating. 
 - h. Now your authentik UI is publicly available at a readable URL. We don't want it publicly available without some form of protection through authentication; that is the whole point of this guide after all. The authentik admin account already has a strong password, so let's add another layer of protection with 2FA. Head to your authentik UI at it's new URL, but append the ```/if/user/#/library``` path.
 - i. Login as ```akadmin```.
-- j. Go to Settings > MFA Devices > Enroll > TOTP Device. We're going to use a time-based one-time password authentication app. [Check out this guide to for recommendations on 2FA apps.](https://www.privacyguides.org/en/multi-factor-authentication/)
+- j. Go to Settings > MFA Devices > Enroll > TOTP Device. We're going to use a time-based one-time password (TOTP) authentication app. [Check out this guide for recommendations on 2FA apps.](https://www.privacyguides.org/en/multi-factor-authentication/)
 - k. In your 2FA app, scan the QR code on your computer screen to finish setting up.
 - l. Enter the code given to you by your app, into authentik.
 - m. Click Continue. 
@@ -88,12 +88,12 @@ The last thing you need to do before creating your first authentik Application/P
 - c. Copy and save the Origin Certificate and Private Key in a ==secure place==.
 - d. Now login into your authentik UI as ```akadmin```. Head to System > Certificates > Create.
 - e. Make the name for your cert something simple like ```cloudflare``` so you know what it's for. 
-- f. Input the text of the certificate you just created in Cloudflare into the appropriate spots.
-- g. Create. 
+- f. Input the text of the certificate you just created in Cloudflare, into the appropriate spots.
+- g. Click Create. 
 
 ### 6. Create the Application and Provider for your service in authentik
 
-authentik is ready to protect it's first application! Generally speaking in authentik, you have 1 Application/Provider combination per 1 application that you are protecting. Let's setup your first one. 
+authentik is ready to protect it's first application! Generally speaking in authentik, you have 1 Application/Provider combination per 1 service that you are protecting. Let's setup your first one. 
 
 - a. Still in the authentik UI, click on the Applications tab, and then "Create With Wizard".
 - b. Enter a name for this application. For simplicity, I recommend naming this after the service you're trying to expose. This will help you keep everything straight, as generally speaking with authentik, you'll be creating a separate Application and Provider in authentik for each service you want to protect. Again for simplicity, I recommend keeping the default value that populates for the Slug. 
@@ -103,7 +103,7 @@ authentik is ready to protect it's first application! Generally speaking in auth
 - f. Select ```Confidential``` as the Client type.
 - g. Input ```https://<your Zero Trust team domain>.cloudflareaccess.com/cdn-cgi/access/callback``` as your Redirect URls/Origins . Your Zero Trust team domain may be different from your custom domain. You set it up upon initially making your Cloudflare Zero Trust account, and can find it in the Zero Trust dash under Settings > Custom Pages > Team domain. 
 - h. Select the certificate you just inputted into authentik for your Signing Key.
-- i. Submit.
+- i. Click Submit.
 
 ### 7. Add the authentik Provider to your Cloudflare Zero Trust authentication settings
 
@@ -118,7 +118,7 @@ Next, we need to add the authentik Provider you just created, as a login method 
 	- Authorize URL > Auth URL
 	- Token URL > Token URL
 	- JWKS URL > Certificate URL
-- e. Save.
+- e. Click Save.
 
 ### 8. Expose and secure your service
 
@@ -139,10 +139,10 @@ Now that you have authentik set up and ready for your first service, you can exp
 - m. Click Next.
 - n. Toggle ```Bypass options requests to origin```.
 - o. Click Add application.
-- p. Test your setup. Head to the URL for your service, and see if you are faced with the authentik login page before you an access your service. 
+- p. Test your setup. Head to the URL for your service, and see if you are faced with the authentik login page before you can access your service. 
 
-##### 🎉🎊 Congrats! 🎊🎉
-You are up and running with authentik. 
+#### 🎉🎊 Congrats! 🎊🎉
+You are up and running with authentik. Repeat steps 6-8 for any additional services you want to expose and protect.
 
 ## What now?
 
@@ -178,8 +178,9 @@ At the Cloudflare level, there are several ways to monitor traffic. One key way 
 ### Custom CSS
 [Official Documentation](https://docs.goauthentik.io/docs/customize/interfaces/user/customization#custom-css)
 
-You can customize your authentik login portal with your own CSS! [Here's a cool example template to get you started](https://github.com/goauthentik/authentik/discussions/4831)
-
+You can customize your authentik login portal with your own CSS! Here's a [cool example template](https://github.com/goauthentik/authentik/discussions/4831)
+ to get you started
+ 
 ### Cloudflare Domain WAF Custom Rules
 [Official Documentation](https://developers.cloudflare.com/waf/)
 
