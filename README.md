@@ -1,2 +1,3 @@
-# authentikate-cloudflared
-a guide to protect cloudflared-exposed services behind authentik SSO
+# authenticate your cloudflared
+
+A comprehensive guide to exposing your services with Cloudflare Tunnels, and protecting them behind authentik authentication. Created as a reminder on how to do this for myself, because I struggled to do so the first time around. There is plenty of documentation out there on this topic, including officially from [authentik](https://docs.goauthentik.io/integrations/services/cloudflare-access/) and [Cloudflare](https://developers.cloudflare.com/cloudflare-one/identity/idp-integration/generic-oidc/). But as a beginner, I found that what exists was not specific enough. So here are the steps I personally took, in excruciating detail. 
