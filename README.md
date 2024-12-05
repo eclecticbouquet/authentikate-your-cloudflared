@@ -125,13 +125,13 @@ Next, we need to add the authentik Provider you just created, as a login method 
 Now that you have authentik set up and ready for your first service, you can expose whatever service you want and immediately put it behind authentication. 
 
 - a. In the Cloudflare Zero Trust dash, navigate to Networks > Tunnels > click the tunnel you created earlier > Edit > Public Hostnames > Add a public hostname. 
-- b. To expose your chosen service via cloudflared, follow [steps 4a-4g](https://github.com/lynArk/authentikate-your-cloudflared/edit/main/README.md#4-expose-and-secure-authentik) in this guide. Of course, change values to reflect the service that you want to expose, rather than again entering the details for authentik. I'll use my BookStack instance mentioned in [step 1](https://github.com/lynArk/authentikate-your-cloudflared/edit/main/README.md#1-verify-service-functionality) as an example. Internally on my network, BookStack is available at ```http://192.168.1.69:6875```. I've configured cloudflared to expose the service from that IP, to a public hostname known as ```bookstack.exampledomain.com```. 
+- b. To expose your chosen service via cloudflared, follow [steps 4a-4g](https://github.com/lynArk/authentikate-your-cloudflared?tab=readme-ov-file#4-expose-and-secure-authentik) in this guide. Of course, change values to reflect the service that you want to expose, rather than again entering the details for authentik. I'll use my BookStack instance mentioned in [step 1](https://github.com/lynArk/authentikate-your-cloudflared?tab=readme-ov-file#1-verify-service-functionality) as an example. Internally on my network, BookStack is available at ```http://192.168.1.69:6875```. I've configured cloudflared to expose the service from that IP, to a public hostname known as ```bookstack.exampledomain.com```. 
 - c. With your service now publicly available through a Cloudflare tunnel, let's now protect it with authentik. Still in the Cloudflare Zero Trust dash, navigate to Access > Applications > Add an application > Self-hosted. 
 - d. Chose an application name. I simply choose the name of the service that I'm hosting.
 - e. Select a Session Duration, that defines how long a user will have access to your service before having to re-authenticate. The default 24 hours is a fine option.
-- f. Enter the subdomain and domain that you configured in [step 8b](https://github.com/lynArk/authentikate-your-cloudflared/edit/main/README.md#8-expose-and-secure-your-service).
+- f. Enter the subdomain and domain that you configured in [step 8b](https://github.com/lynArk/authentikate-your-cloudflared?tab=readme-ov-file#8-expose-and-secure-your-service).
 - g. Un-toggle ```Accept all available identity providers```.
-- h. Select only the login method you defined in [step 7](https://github.com/lynArk/authentikate-your-cloudflared/edit/main/README.md#7-add-the-authentik-provider-to-your-cloudflare-zero-trust-authentication-settings).
+- h. Select only the login method you defined in [step 7](https://github.com/lynArk/authentikate-your-cloudflared?tab=readme-ov-file#7-add-the-authentik-provider-to-your-cloudflare-zero-trust-authentication-settings).
 - i. Toggle ```Allow users to skip identity provider selection when only one login method is available.```.
 - j. Click Next.
 - k. Choose a policy name. 
