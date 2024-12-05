@@ -24,7 +24,7 @@ Verify that your chosen service is accessible at ```http://<your-host's-ip>:<ser
 
 ### 2. Deploy authentik with Docker
 
-[Here is the official documentation for deploying authentik with Docker.](https://docs.goauthentik.io/docs/install-config/install/docker-compose), if you want to cross-reference with my own steps.
+[Here is the official documentation for deploying authentik with Docker](https://docs.goauthentik.io/docs/install-config/install/docker-compose), if you want to cross-reference with my own steps.
 
 - a. Navigate to a folder that you want to store configuration and data in for your authentik instance. This will be your authentik project folder. Mine is simply named ```authentik```.
 - b. Run ```wget https://goauthentik.io/docker-compose.yml```. This will download the official template for deploying authentik with Docker Compose.
@@ -55,7 +55,7 @@ Before we set up authentik, we now need to set up a Cloudflare tunnel. The servi
 - b. Name your tunnel! I simply named mine after the host machine I would be running it on.
 - c. Save tunnel.
 - d. Select ```Docker``` as your environment. 
-- e. On your host, navigate to a folder that you want to store your docker-compose.yml in for cloudflared. This will be you cloudflared project folder. 
+- e. On your host, navigate to a folder that you want to store your docker-compose.yml in for cloudflared. This will be your cloudflared project folder. 
 - f. Cloudflare suggests using the ```docker run``` command to spin up cloudflared, but I systematically use Docker Compose across my whole system. So that's what I'll explain here. Run ```wget https://github.com/lynArk/authentikate-your-cloudflared/blob/main/compose/cloudflared.yml``` to download my example compose file. Pretty much the only necessary change you need to make, is editing ```<your token>``` by replacing it with the token Cloudflare gives you when you select Docker as your environment. Save changes.
 - g. Rename your compose file by running ```mv cloudflared.yml docker-compose.yml```.
 - h. Run ```sudo docker compose up -d```. Back on the Cloudflare site, you should almost immediately be able to see a running Connector for your newly created tunnel.
@@ -85,7 +85,7 @@ The last thing you need to do before creating your first authentik Application/P
 
 - a. Head to the Cloudflare dashboard for your custom domain.
 - b. Navigate to SSL/TLS > Origin Server > Create Certificate. Creating a certificate with the default settings will use a Cloudflare-generated key, encrypted with RSA. The certificate will protect your top level domain as well as any sub domains, and last for 15 years.
-- c. Copy and save the Origin Certificate and Private Key in a ==secure place==.
+- c. Copy and save the Origin Certificate and Private Key in a **secure place**.
 - d. Now login into your authentik UI as ```akadmin```. Head to System > Certificates > Create.
 - e. Make the name for your cert something simple like ```cloudflare``` so you know what it's for. 
 - f. Input the text of the certificate you just created in Cloudflare, into the appropriate spots.
