@@ -179,7 +179,7 @@ At the Cloudflare level, there are several ways to monitor traffic. One key way 
 [Official Documentation](https://docs.goauthentik.io/docs/customize/interfaces/user/customization#custom-css)
 
 You can customize your authentik login portal with your own CSS! Here's a [cool example template](https://github.com/goauthentik/authentik/discussions/4831)
- to get you started
+ to get you started!
  
 ### Cloudflare Domain WAF Custom Rules
 [Official Documentation](https://developers.cloudflare.com/waf/)
