@@ -85,7 +85,7 @@ The last thing you need to do before creating your first authentik Application/P
 
 - a. Head to the Cloudflare dashboard for your custom domain.
 - b. Navigate to SSL/TLS > Origin Server > Create Certificate. Creating a certificate with the default settings will use a Cloudflare-generated key, encrypted with RSA. The certificate will protect your top level domain as well as any sub domains, and last for 15 years.
-- c. Copy and save the Origin Certificate and Private Key in a **secure place**.
+- c. Copy and save the Origin Certificate and Private Key in a _**secure place**_.
 - d. Now login into your authentik UI as ```akadmin```. Head to System > Certificates > Create.
 - e. Make the name for your cert something simple like ```cloudflare``` so you know what it's for. 
 - f. Input the text of the certificate you just created in Cloudflare, into the appropriate spots.
