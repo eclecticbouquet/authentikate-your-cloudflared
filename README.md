@@ -7,7 +7,7 @@ A comprehensive guide to exposing your services with Cloudflare Tunnels, and pro
 ## Notes
 
 - Following this method reveals your traffic in cleartext to Cloudflare. I chose to do so personally, but this is not the way for those looking to have the most privacy and independence from third parties. 
-- I use code blocks like ```this``` frequently throughout the guide, for filenames, options, code, commands, etc. This is for the sake of making clear EXACTLY what needs to be inputted or selected. 
+- I use code blocks like ```this``` frequently throughout the guide, for filenames, options, commands, etc. This is for the sake of making clear EXACTLY what needs to be inputted or selected. 
 - When going through configuration steps, leave alone any settings that you see that I do not mention. For the purposes of this guide, those settings should remain default.
 
 ## Pre-requisites 
@@ -96,14 +96,15 @@ The last thing you need to do before creating your first authentik Application/P
 authentik is ready to protect it's first application! Generally speaking in authentik, you have 1 Application/Provider combination per 1 service that you are protecting. Let's setup your first one. 
 
 - a. Still in the authentik UI, click on the Applications tab, and then "Create With Wizard".
-- b. Enter a name for this application. For simplicity, I recommend naming this after the service you're trying to expose. This will help you keep everything straight, as generally speaking with authentik, you'll be creating a separate Application and Provider in authentik for each service you want to protect. Again for simplicity, I recommend keeping the default value that populates for the Slug. 
-- c. Set the policy engine mode to ```any```.
-- d. Select ```OAuth2/OIDC``` as your Provider Type.
-- e. Select ```default-provider-authorization-explicit-consent``` as your Authorization flow. Custom authorization flows can be created in the future for a more customized setup, but this guide is only detailing how to get started with authentik + cloudflared. 
-- f. Select ```Confidential``` as the Client type.
-- g. Input ```https://<your Zero Trust team domain>.cloudflareaccess.com/cdn-cgi/access/callback``` as your Redirect URls/Origins . Your Zero Trust team domain may be different from your custom domain. You set it up upon initially making your Cloudflare Zero Trust account, and can find it in the Zero Trust dash under Settings > Custom Pages > Team domain. 
-- h. Select the certificate you just inputted into authentik for your Signing Key.
-- i. Click Submit.
+- b. Enter a name for this application. For simplicity, I recommend naming this after the service you're trying to expose.
+- c. Again for simplicity, I recommend keeping the default value that populates for the Slug. 
+- d. Set the policy engine mode to ```any```.
+- e. Select ```OAuth2/OIDC``` as your Provider Type.
+- f. Select ```default-provider-authorization-explicit-consent``` as your Authorization flow. Custom authorization flows can be created in the future for a more customized setup, but this guide is only detailing how to get started with authentik + cloudflared. 
+- g. Select ```Confidential``` as the Client type.
+- h. Input ```https://<your Zero Trust team domain>.cloudflareaccess.com/cdn-cgi/access/callback``` as your Redirect URls/Origins . Your Zero Trust team domain may be different from your custom domain. You set it up upon initially making your Cloudflare Zero Trust account, and can find it in the Zero Trust dash under Settings > Custom Pages > Team domain. 
+- i. Select the certificate you just inputted into authentik for your Signing Key.
+- j. Click Submit.
 
 ### 7. Add the authentik Provider to your Cloudflare Zero Trust authentication settings
 
