@@ -1,4 +1,4 @@
-# authenticate your cloudflared
+# authentikate your cloudflared
 
 ![cloudflare + authentik](https://github.com/lynArk/authentikate-your-cloudflared/blob/main/img/cloudflare+authentik.jpg?raw=true)
 
@@ -14,7 +14,7 @@ A comprehensive guide to exposing your services with Cloudflare Tunnels, and pro
 
 - custom domain with Cloudflare as your DNS provider 
 - [FREE Cloudflare Zero Trust account](https://dash.cloudflare.com/sign-up/teams)
-- access to a host machine with [Docker engine installed](https://docs.docker.com/engine/install/). 
+- access to a host machine with [Docker engine installed](https://docs.docker.com/engine/install/)
 
 ## Step-by-step Guide
 
