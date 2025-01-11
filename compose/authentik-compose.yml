@@ -8,7 +8,6 @@ services:
   postgresql:
     image: docker.io/library/postgres:16-alpine
     container_name: postgresql-atk
-    restart: unless-stopped
     healthcheck:
       test:
         - CMD-SHELL
@@ -25,11 +24,11 @@ services:
       POSTGRES_DB: <name for your authentik database>
     env_file:
       - .env
+    restart: unless-stopped
   redis:
     image: docker.io/library/redis:alpine
     container_name: redis-atk
     command: --save 60 1 --loglevel warning
-    restart: unless-stopped
     healthcheck:
       test:
         - CMD-SHELL
@@ -40,37 +39,20 @@ services:
       timeout: 3s
     volumes:
       - redis:/data
+    restart: unless-stopped
   authentik:
     image: ghcr.io/goauthentik/server:latest
     container_name: authentik-server
     command: server
-    restart: unless-stopped
-    environment:
-      AUTHENTIK_REDIS__HOST: redis
-      AUTHENTIK_POSTGRESQL__HOST: postgresql
-      AUTHENTIK_POSTGRESQL__USER: <username for your authentik database>
-      AUTHENTIK_POSTGRESQL__NAME: <name for your authentik database>
-      AUTHENTIK_POSTGRESQL__PASSWORD: ${AUTHENTIK_POSTGRESQL__PASSWORD}
-      AUTHENTIK_REDIS__DB: 1
-    volumes:
-      - ./media:/media
-      - ./custom-templates:/templates
-      - ./sevmonster-style.css:/web/dist/custom.css
-    env_file:
-      - .env
     ports:
       - <HTTP access port>:9000 # Use this host port when first accessing the authentik UI.
       - <HTTPS access port>:9443
         # (host port):(docker port)
-        # You can customize the host ports, but the docker ports need to remain default.
-    depends_on:
-      - postgresql
-      - redis
-  worker:
-    image: ghcr.io/goauthentik/server:2024.10.4
-    container_name: authentik-worker
-    command: worker
-    restart: unless-stopped
+        # You can customize the host ports, but the docker ports need to remain default.    
+    volumes:
+      - ./media:/media
+      - ./custom-templates:/templates
+      - ./sevmonster-style.css:/web/dist/custom.css
     environment:
       AUTHENTIK_REDIS__HOST: redis
       AUTHENTIK_POSTGRESQL__HOST: postgresql
@@ -78,6 +60,16 @@ services:
       AUTHENTIK_POSTGRESQL__NAME: <name for your authentik database>
       AUTHENTIK_POSTGRESQL__PASSWORD: ${AUTHENTIK_POSTGRESQL__PASSWORD}
       AUTHENTIK_REDIS__DB: 1
+    env_file:
+      - .env
+    depends_on:
+      - postgresql
+      - redis
+    restart: unless-stopped
+  worker:
+    image: ghcr.io/goauthentik/server:2024.10.4
+    container_name: authentik-worker
+    command: worker
     user: root
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
@@ -85,11 +77,19 @@ services:
       - ./media:/media
       - ./certs:/certs
       - ./custom-templates:/templates
+    environment:
+      AUTHENTIK_REDIS__HOST: redis
+      AUTHENTIK_POSTGRESQL__HOST: postgresql
+      AUTHENTIK_POSTGRESQL__USER: <username for your authentik database>
+      AUTHENTIK_POSTGRESQL__NAME: <name for your authentik database>
+      AUTHENTIK_POSTGRESQL__PASSWORD: ${AUTHENTIK_POSTGRESQL__PASSWORD}
+      AUTHENTIK_REDIS__DB: 1    
     env_file:
       - .env
     depends_on:
       - postgresql
       - redis
+    restart: unless-stopped
 volumes:
   database:
     driver: local
